@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'jvm-test-suite'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+dependencies {
+    // Karate dependencies
+    testImplementation "com.intuit.karate:karate-junit5:1.4.0"
+    testImplementation "net.masterthought:cucumber-reporting:5.7.5"
+    testImplementation "org.slf4j:slf4j-api:2.0.7"
+    testImplementation "ch.qos.logback:logback-classic:1.4.11"
+}
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter("5.10.0")
+            dependencies {
+                implementation "org.junit.jupiter:junit-jupiter-api:5.10.0"
+                runtimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.0"
+            }
+            targets {
+                all {
+                    testTask.configure {
+                        systemProperty "karate.options", System.properties.getProperty("karate.options")
+                        systemProperty "karate.env", System.properties.getProperty("karate.env", "dev")
+                        systemProperty "karate.config.dir", "src/test/resources"
+                        // Removed nashorn JS engine as it's not compatible with Java 21
+                        outputs.upToDateWhen { false }
+                        testLogging {
+                            events "passed", "skipped", "failed"
+                            showStandardStreams = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Task for running a specific feature file
+task karateExecute(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = "com.intuit.karate.cli.Main"
+}
+
+// Task to print classpath for external use
+task printClasspath {
+    doLast {
+        println sourceSets.test.runtimeClasspath.asPath
+    }
+}
