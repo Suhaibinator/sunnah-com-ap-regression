@@ -8,11 +8,11 @@ function fn() {
   var config = {
     env: env,
     apiImpl1: {
-      baseUrl: 'https://api1.sunnah.com/v1',
-      apiKey: 'sdfaf'
+      baseUrl: 'https://api.sunnah.com/v1',
+      apiKey: ''
     },
     apiImpl2: {
-      baseUrl: 'https://api2.sunnah.com/v1',
+      baseUrl: 'http://localhost:8084/v1',
       apiKey: 'your-api-key-2'
     },
     compareResponses: function(response1, response2) {

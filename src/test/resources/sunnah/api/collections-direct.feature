@@ -1,7 +1,10 @@
 Feature: Test Collections Endpoints (Direct API Calls)
 
   Background:
-    * def compareResponses = function(response1, response2) { 
+    # Wrap the entire JS function for compareResponses in triple quotes
+    * def compareResponses =
+    """
+    function(response1, response2) { 
         var result = { equal: true, differences: [] }; 
         karate.log('Comparing responses:');
         karate.log('Response 1 status: ' + response1.status);
@@ -31,8 +34,12 @@ Feature: Test Collections Endpoints (Direct API Calls)
         } 
         return result; 
       }
+    """
       
-    * def logResults = function(result) { 
+    # Wrap the entire JS function for logResults in triple quotes
+    * def logResults =
+    """
+    function(result) { 
         karate.log('Testing endpoint: ' + result.endpoint); 
         if (result.params) { 
           karate.log('With params: ' + JSON.stringify(result.params)); 
@@ -47,6 +54,7 @@ Feature: Test Collections Endpoints (Direct API Calls)
         } 
         return result.comparison.equal; 
       }
+    """
 
   Scenario: Test GET /collections endpoint
     # Log test info
@@ -75,7 +83,7 @@ Feature: Test Collections Endpoints (Direct API Calls)
     * if (typeof response === 'object') print 'API2 response body preview:', JSON.stringify(response).substring(0, 300) + '...'
     # Only assert status if API2 is working properly
     * def isApi2Working = response.status != 500
-    * if (isApi2Working) status 200
+    * if (isApi2Working) assert response.status == 200
     And def response2 = response
     
     # Compare responses only if API2 is working
@@ -117,7 +125,7 @@ Feature: Test Collections Endpoints (Direct API Calls)
     * print 'API2 response body:', response
     # Only assert status if API2 is working properly
     * def isApi2Working = response.status != 500
-    * if (isApi2Working) status 200
+    * if (isApi2Working) assert response.status == 200
     And def response2 = response
     
     # Compare responses only if API2 is working
@@ -160,7 +168,7 @@ Feature: Test Collections Endpoints (Direct API Calls)
     * print 'API2 response body:', response
     # Only assert status if API2 is working properly
     * def isApi2Working = response.status != 500
-    * if (isApi2Working) status 200
+    * if (isApi2Working) assert response.status == 200
     And def response2 = response
     
     # Compare responses only if API2 is working

@@ -1,6 +1,6 @@
 # Sunnah.com API Regression Test Suite
 
-This project provides a comprehensive regression test suite for comparing two different implementations of the Sunnah.com API. It uses the [Karate](https://github.com/intuit/karate) framework to perform API testing and comparison.
+This project provides a comprehensive regression test suite for comparing two different implementations of the Sunnah.com API. It uses the [Karate](https://github.com/intuit/karate) framework to perform API testing and comparison, and includes Python scripts for additional testing and reporting capabilities.
 
 ## Overview
 
@@ -163,3 +163,74 @@ If you encounter issues:
    ```bash
    ./gradlew clean test
    ```
+
+## Python Test Suite
+
+The project also includes a Python test suite that provides additional testing capabilities and reporting features.
+
+### Failed Endpoints Tracking
+
+The Python test suite now includes a feature to track and persist information about endpoints that don't have parity between the two API implementations. This is particularly useful for running tests overnight and checking the results in the morning.
+
+When an endpoint fails the parity check, the information is automatically saved to a file at `python/output/failed_endpoints.json`. This file includes:
+
+- The endpoint that failed
+- The parameters used in the request
+- The specific differences found
+- A timestamp of when the failure occurred
+
+### Viewing Failed Endpoints
+
+To view the failed endpoints, you can use the provided script:
+
+```bash
+# View all failed endpoints
+python/view_failed_endpoints.py
+
+# View only a summary of failed endpoints
+python/view_failed_endpoints.py --summary
+
+# View failures for a specific endpoint
+python/view_failed_endpoints.py --endpoint collections/bukhari
+
+# View failures since a specific date
+python/view_failed_endpoints.py --since 2025-03-06
+
+# Clear the failed endpoints file after viewing
+python/view_failed_endpoints.py --clear
+```
+
+### Python Configuration
+
+The Python test suite now also reads API keys from the same `.env` file in the project root. This ensures that both the Java and Python tests use the same API keys.
+
+The `.env` file should contain:
+
+```
+API1_KEY=your-api-key-1
+API2_KEY=your-api-key-2
+```
+
+If the `.env` file is not found or the environment variables are not set, the Python tests will use the default values defined in `python/config.py`.
+
+### Running Python Tests
+
+To run the Python tests:
+
+```bash
+# Run all tests
+cd python
+./run_tests.sh
+
+# Run specific test types
+python main.py --collections-only
+python main.py --books-only
+python main.py --hadiths-only
+
+# Run without generating reports
+python main.py --no-report
+```
+
+When the tests run, they will log the API configuration including masked API keys to show that they are being loaded correctly from the `.env` file.
+
+After running the tests, a summary of failed endpoints will be displayed in the console, and detailed information will be available in the `python/output/failed_endpoints.json` file.

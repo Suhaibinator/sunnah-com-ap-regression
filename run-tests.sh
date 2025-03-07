@@ -3,10 +3,8 @@
 # Script to run Sunnah.com API regression tests
 
 # Default values
-API1_URL="https://api1.sunnah.com/v1"
-API2_URL="https://api2.sunnah.com/v1"
-API1_KEY="your-api-key-1"
-API2_KEY="your-api-key-2"
+API1_URL="https://api.sunnah.com/v1"
+API2_URL="http://localhost:8084/v1"
 FEATURE_FILE=""
 
 # Load values from .env file if it exists

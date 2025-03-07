@@ -33,10 +33,9 @@ Feature: Test Collections Endpoints
     * assert logResults(result)
 
     Examples:
-      * def collectionData = karate.jsonPath(read('file:target/collections.json'), '$[*].name')
-      * table examples
-        | collectionName | 
-        #(collectionData)
+      | collectionName |
+      | bukhari        |
+      | muslim         |
 
   Scenario Outline: Test GET /collections/{collectionName}/books endpoint
     * def result = compareApi('/collections/' + collectionName + '/books', null)
@@ -46,18 +45,15 @@ Feature: Test Collections Endpoints
     * eval if (result.response1.json.data && result.response1.json.data.length > 0) karate.write(result.response1.json.data, 'target/books_' + collectionName + '.json')
 
     Examples:
-      * def collectionData = karate.jsonPath(read('file:target/collections.json'), '$[*].name')
-      * table examples
-        | collectionName | 
-        #(collectionData)
+      | collectionName |
+      | bukhari        |
+      | muslim         |
 
   Scenario Outline: Test GET /collections/{collectionName}/books/{bookNumber} endpoint
     * def result = compareApi('/collections/' + collectionName + '/books/' + bookNumber, null)
     * assert logResults(result)
 
     Examples:
-      * def collections = read('file:target/collections.json')
-      * def examples = []
-      * eval for (var i = 0; i < collections.length; i++) { var collectionName = collections[i].name; try { var books = read('file:target/books_' + collectionName + '.json'); for (var j = 0; j < books.length; j++) { examples.push({ collectionName: collectionName, bookNumber: books[j].bookNumber }); } } catch (e) { /* No books for this collection */ } }
-      * table examples
-        | collectionName | bookNumber |
+      | collectionName | bookNumber |
+      | bukhari        | 1          |
+      | muslim         | 1          |

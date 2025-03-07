@@ -2,7 +2,7 @@ Feature: API Connectivity Test
 
   Scenario: Test API1 connectivity
     Given url 'https://api.sunnah.com/v1/collections'
-    And header X-API-Key = 'SiRM4QDDeO3f9bDqSO6tS3p9ey3CwpAb2JT9byxl'
+    And header X-API-Key = ''
     When method get
     Then status 200
     And print 'API1 response:', response
